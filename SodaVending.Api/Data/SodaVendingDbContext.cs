@@ -91,14 +91,14 @@ public class SodaVendingDbContext : DbContext
         
         var products = new[]
         {
-            new Product { Id = 1, Name = "Coca-Cola Classic", ImageUrl = "/images/products/coca-cola.png", Price = 80, Quantity = 10, BrandId = 1 },
-            new Product { Id = 2, Name = "Coca-Cola Zero", ImageUrl = "/images/products/coca-cola-zero.png", Price = 90, Quantity = 15, BrandId = 1 },
-            new Product { Id = 3, Name = "Pepsi", ImageUrl = "/images/products/pepsi.png", Price = 75, Quantity = 20, BrandId = 2 },
-            new Product { Id = 4, Name = "Pepsi Light", ImageUrl = "/images/products/pepsi-light.png", Price = 80, Quantity = 0, BrandId = 2 },
-            new Product { Id = 5, Name = "Sprite", ImageUrl = "/images/products/sprite.png", Price = 70, Quantity = 25, BrandId = 3 },
-            new Product { Id = 6, Name = "Sprite Cherry", ImageUrl = "/images/products/sprite-cherry.png", Price = 75, Quantity = 18, BrandId = 3 },
-            new Product { Id = 7, Name = "Fanta Orange", ImageUrl = "/images/products/fanta.png", Price = 65, Quantity = 30, BrandId = 4 },
-            new Product { Id = 8, Name = "Fanta Lemon", ImageUrl = "/images/products/fanta-lemon.png", Price = 60, Quantity = 22, BrandId = 4 }
+            new Product { Id = 1, Name = "Coca-Cola Classic", ImageUrl = "coca-cola.png", Price = 80, Quantity = 10, BrandId = 1 },
+            new Product { Id = 2, Name = "Coca-Cola Zero", ImageUrl = "coca-cola-zero.png", Price = 90, Quantity = 15, BrandId = 1 },
+            new Product { Id = 3, Name = "Pepsi", ImageUrl = "pepsi.png", Price = 75, Quantity = 20, BrandId = 2 },
+            new Product { Id = 4, Name = "Pepsi Light", ImageUrl = "pepsi-light.png", Price = 80, Quantity = 0, BrandId = 2 },
+            new Product { Id = 5, Name = "Sprite", ImageUrl = "sprite.png", Price = 70, Quantity = 25, BrandId = 3 },
+            new Product { Id = 6, Name = "Sprite Cherry", ImageUrl = "sprite-cherry.png", Price = 75, Quantity = 18, BrandId = 3 },
+            new Product { Id = 7, Name = "Fanta Orange", ImageUrl = "fanta.png", Price = 65, Quantity = 30, BrandId = 4 },
+            new Product { Id = 8, Name = "Fanta Lemon", ImageUrl = "fanta-lemon.png", Price = 60, Quantity = 22, BrandId = 4 }
         };
         
         modelBuilder.Entity<Product>().HasData(products);

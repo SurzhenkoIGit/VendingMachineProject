@@ -108,7 +108,7 @@ public class ProductService : IProductService
             Quantity = product.Quantity,
             BrandId = product.BrandId,
             BrandName = product.Brand?.Name ?? string.Empty,
-            ImageUrl = product.ImageUrl
+            ImageUrl = $"http://localhost:5000/images/products/{product.ImageUrl}"
         };
     }
 }

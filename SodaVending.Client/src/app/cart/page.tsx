@@ -1,18 +1,26 @@
 'use client';
 
+import { useSelector, UseSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { removeFromCart, updateQuantity } from '@/store/cartSlice';
+import { CartItem } from '@/components/CartItem';
+import { EmptyCart } from '@/components/EmptyCart';
+import { RootState } from '@/store';
 
 export default function CartPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const cartItems = useAppSelector((state) => state.cart.items);
-  const totalItems = useAppSelector((state) => state.cart.totalItems);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const totalAmount = useSelector((state: RootState) => state.cart.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0));
 
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
   };
+
+  if(cartItems.length === 0) {
+    return <EmptyCart/>;
+  }
 
   const handleQuantityChange = (productId: number, newQuantity: number) => {
     if (newQuantity === 0) {

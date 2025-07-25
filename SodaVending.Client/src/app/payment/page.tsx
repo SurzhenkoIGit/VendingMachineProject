@@ -99,27 +99,33 @@ export default function PaymentPage() {
             <h2 className="text-2xl font-bold mb-4">
               Спасибо за покупку!
             </h2>
-            
-            {orderResult.changeAmount > 0 && (
-              <p className="text-xl mb-6">
-                Пожалуйста, возьмите вашу сдачу: {orderResult.changeAmount} руб.
-              </p>
-            )}
 
-            <p className="text-lg font-medium mb-4">Ваши монеты:</p>
+            {orderResult.changeAmount > 0 ? (
+              <>
+                <p className="text-xl mb-6">
+                  Пожалуйста, возьмите вашу сдачу: {orderResult.changeAmount} руб.
+                </p>
+
+                <p className="text-lg font-medium mb-4">Ваши монеты:</p>
             
-            <div className="flex flex-col items-center gap-3 mb-8">
-              {[1, 2, 5, 10].map((denomination) => (
-                <div key={denomination} className="flex items-center gap-3 w-32">
-                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                    <span className="text-lg">{denomination}</span>
-                  </div>
-                  <span className="text-lg">
-                    {(orderResult.changeCoins?.[denomination] || 0)} шт.
-                  </span>
+                <div className="flex flex-col items-center gap-3 mb-8">
+                  {[1, 2, 5, 10].map((denomination) => (
+                    <div key={denomination} className="flex items-center gap-3 w-32">
+                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                        <span className="text-lg">{denomination}</span>
+                      </div>
+                      <span className="text-lg">
+                        {(orderResult.changeCoins?.[denomination] || 0)} шт.
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            ) : (
+                <p className="text-xl mb-6">
+                  Оплачено без сдачи!
+                </p>
+            )}
 
             <button
               onClick={handleBackToCatalog}

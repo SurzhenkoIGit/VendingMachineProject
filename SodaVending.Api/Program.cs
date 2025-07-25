@@ -48,6 +48,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
+
 app.UseCors("AllowNextJs");
 
 app.UseAuthorization();
