@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchProducts, fetchBrands, fetchPriceRange } from '@/store/productSlice';
-import { Filters } from '@/components/Filters';
-import { ProductGrid } from '@/components/ProductGrid';
-import { CartButton } from '@/components/CartButton';
+import { Filters } from '@/components/product/Filters';
+import { ProductGrid } from '@/components/product/ProductGrid';
+import { CartButton } from '@/components/product/CartButton';
 
 export default function Home() {
   const router = useRouter();

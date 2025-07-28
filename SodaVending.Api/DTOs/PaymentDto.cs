@@ -13,3 +13,9 @@ public class ValidatePaymentDto
     public int TotalAmount { get; set; }
     public Dictionary<int, int> PaymentCoins { get; set; } = new();
 }
+
+public class PaymentRequestDto
+{
+    public int TotalAmount { get; set; }
+    public Dictionary<int, int> PaymentCoins { get; set; } = new();
+}

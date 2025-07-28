@@ -4,6 +4,7 @@ namespace SodaVending.Api.Services;
 
 public interface IPaymentService
 {
-    Task<PaymentValidationResultDto> ValidatePaymentAsync(int totalAmount, Dictionary<int, int> paymentCoins);
-    Dictionary<int, int> CalculateChange(int changeAmount, Dictionary<int, int> availableCoins);
+    Task<(bool isSuccess, string ErrorMessage)> CheckPaymentPossibilityAsync(int totalAmount, Dictionary<int, int> paymentCoins);
+    Task<Dictionary<int, int>> ProcessPaymentAndUpdateCoinsAsync(int totalAmount, Dictionary<int, int> paymentCoins);
+    //Task<PaymentValidationResultDto> ValidatePaymentAsync(int totalAmount, Dictionary<int, int> paymentCoins);
 }

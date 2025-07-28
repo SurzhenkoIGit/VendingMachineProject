@@ -57,11 +57,12 @@ public class OrderService : IOrderService
             totalAmount += orderItem.TotalPrice;
         }
 
-        // Вызываем сервис оплаты для проверки, может ли автомат обработать платеж (хватает ли денег и можно ли выдать сдачу)
-        var paymentValidation = await _paymentService.ValidatePaymentAsync(totalAmount, createOrderDto.PaymentCoins);
-        if (!paymentValidation.CanMakeChange)
-            throw new InvalidOperationException(paymentValidation.ErrorMessage);
+        var (isSuccess, errorMessage) = await _paymentService.CheckPaymentPossibilityAsync(totalAmount, createOrderDto.PaymentCoins);
+        if (!isSuccess) 
+            throw new InvalidOperationException(errorMessage);
 
+        var changeCoins = await _paymentService.ProcessPaymentAndUpdateCoinsAsync(totalAmount, createOrderDto.PaymentCoins);
+        var changeAmount = changeCoins.Sum(c => c.Key * c.Value);
         // Рассчитываем общую сумму, внесенную клиентом.
         decimal paymentAmount = createOrderDto.PaymentCoins.Sum(c => c.Key * c.Value);
 
@@ -71,8 +72,8 @@ public class OrderService : IOrderService
             TotalAmount = totalAmount,
             PaymentAmount = paymentAmount,
             OrderItems = orderItems, 
-            ChangeAmount = paymentValidation.ChangeAmount,
-            ChangeCoins = paymentValidation.ChangeCoins != null ? JsonSerializer.Serialize(paymentValidation.ChangeCoins) : null, // Используем Serialize для хранения пары ключ-значение в качетсве JSON строки
+            ChangeAmount = changeAmount,
+            ChangeCoins = JsonSerializer.Serialize(changeCoins) , // Используем Serialize для хранения пары ключ-значение в качетсве JSON строки
             PaymentCoins = JsonSerializer.Serialize(createOrderDto.PaymentCoins)
         };
         
@@ -89,33 +90,6 @@ public class OrderService : IOrderService
                 await _productRepository.UpdateAsync(product);
             }
         }
-
-        // Создаем словарь для отслеживания изменений в количестве монет: положительные значения - добавленные монеты, отрицательные - выданные в качестве сдачи
-        var coinUpdates = new Dictionary<int, int>();
-        
-        // Добавляем монеты, внесенные клиентом
-        foreach (var coin in createOrderDto.PaymentCoins)
-        {
-            coinUpdates[coin.Key] = coin.Value;
-        }
-        
-        // Вычитаем монеты, выданные в качестве сдачи
-        if (paymentValidation.ChangeCoins != null)
-        {
-            foreach (var change in paymentValidation.ChangeCoins)
-            {
-                if (coinUpdates.ContainsKey(change.Key))
-                {
-                    coinUpdates[change.Key] -= change.Value;
-                }
-                else
-                {
-                    coinUpdates[change.Key] = -change.Value;
-                }
-            }
-        }
-        
-        await _coinRepository.UpdateQuantitiesAsync(coinUpdates);
         
         return MapToDto(createdOrder);
     }
